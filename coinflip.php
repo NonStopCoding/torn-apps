@@ -1,13 +1,15 @@
 <?php
-// Include the header file uncase we don't use ajax
-// Comment out require if using ajax.
+/*
+    Coinflip Application v1.0.0
+    Creator: SwiftJustice []
+*/
 // require_once __DIR__.'/inc/header.php';
 
 // Define how much the house earns per game based on there bet 10 Xanax vs 10 Xanax winner takes 16 House gets 4 @ 20%
 // Change the 20 to what percentage you want house to take.
 define('coinflipPerc', '20');
 // Just incase someone uses negitive numbers which will break the system so this is a fix.
-coinflipPerc = coinflipPerc > 0 ? coinflipPerc : 0; 
+coinflipPerc = coinflipPerc => 0 ? abs(intval(coinflipPerc)) : 0; 
 
 // Validate the input passed to the file make sure exists and is number and is greater than 0
 $_GET['playerOne'] = array_key_exists('playerOne', $_POST) && ctype_digit($_GET['playerOne']) && $_GET['playerOne'] > 0 ? $_GET['playerOne'] : null;
@@ -34,16 +36,15 @@ switch ($randomChance) {
         // Poster won
         // Record data into the database
         $db->query('SELECT tornID FROM coinflip_hof WHERE tornID = ?');
-        $db->query([$_GET['playerOne']]);
+        $db->execute([$_GET['playerOne']]);
+        // If it finds the tornid from hof database table where matches player 1
         if ($db->count()) {
-            $userinfo = $db->fetch(true);
+            $userinfo = $db->result();
             $db->query('UPDATE conflip_hof SET betcost = betcost + ? WHERE tornID = ?');
-            $db->exucute([$_GET['playerBet'], $userinfo['tornID']]);
+            $db->exucute([$_GET['playerBet'], $userinfo]);
             echo '
-            <p>
-                You won '.number_format($winnings).' Xanax\'s from this Coin Flip game.<br />
-                House gains '.number_format($betamount).' Xanax\'s.
-            </p>';
+            <p>You won '.number_format($winnings).' Xanax'.($winnings > 1 ? 's' : '').' from this Coin Flip game.</p>
+            <p>House gains '.number_format($betamount).' Xanax'.($betamount > 1 ? 's' : '').' ('.coinflipPerc.'%)</p>';
         }
     break;
     case 2:
@@ -52,14 +53,12 @@ switch ($randomChance) {
         $db->query('SELECT tornID FROM coinflip_hof WHERE tornID = ?');
         $db->query([$_GET['playerTwo']]);
         if ($db->count()) {
-            $userinfo = $db->fetch(true);
+            $userinfo = $db->result();
             $db->query('UPDATE conflip_hof SET betcost = betcost + ? WHERE tornID = ?');
-            $db->exucute([$_GET['playerTwo'], $userinfo['tornID']]);
+            $db->exucute([$_GET['playerTwo'], $userinfo]);
             echo '
-            <p>
-                You won '.number_format($winnings).' Xanax\'s from this Coin Flip game.<br />
-                House gains '.number_format($betamount).' Xanax\'s.
-            </p>';
+            <p>You won '.number_format($winnings).' Xanax'.($winnings > 1 ? 's' : '').' from this Coin Flip game.</p>
+            <p>House gains '.number_format($betamount).' Xanax'.($betamount > 1 ? 's' : '').'  ('.coinflipPerc.'%)</p>';
         }
     break;
 }
