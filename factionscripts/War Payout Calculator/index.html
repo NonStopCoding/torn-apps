@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <title>Display a calculator for faction war earnings</title>
+
+  <style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+} 
+
+body {
+  background: #e1e0e0;
+  padding-bottom: 10px;
+  color: rgb(195, 194, 192);
+}
+h2, p {
+  text-align: center;
+  margin-top: 2%;
+  padding: 5px;
+}
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  width: 100%;
+  background-color: #12b618;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+#content {
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 300px;
+  height: auto;
+  text-align: center;
+  margin-left:auto;
+  margin-right: auto;
+}
+
+#header {
+  width: 100%;
+  height: 20px auto;
+  padding: 5px;
+  background: #230101;
+  margin-bottom: 15px;
+}
+
+#footer {
+  text-align: center;
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  color: darkgrey;
+  backround: #181818;
+  padding: 15px;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+#apikeycontainer {
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: inherit;
+  height: inherit;
+  text-align: center;
+}
+  </style>
+
+  
+</head>
+<body>
+  <div id='header'>
+  <h2>Faction War Calculations</h2>
+  <p>Here you enter the cost per hit and amount of hits and this will calculate the total earnings.</p>
+  <div id='apikeycontainer'>
+	<h2>Enter API KEY (LIMITED *Basic, Faction/Chains/attacks/)</h2>
+	<p>Without this api key all your calculations need to be manually done via editing boxes and adjusting balances</p>
+	<form type='submit'>
+		<label for='usersapikey'>API:</label>
+		<input type='text' id='usersapikey' required />
+		<button type='submit' id='submitapikey' disabled>Store Api Key</button>
+	</form>
+  </div>
+</div>
+
+<div id='content'>
+  <h4>Ranked War Payouts</h4>
+  <label for='value1'>Cost Per Hit:</label>
+  <input type="text" class="input value1">
+  <label for='value2'>Amount Of Kills:</label>
+  <input type="text" class="input value2">
+  <label for='result'>$ earned:</label>  
+  <input type="text" disabled="disabled" id="result">
+</div>
+<div id='footer'>
+  <ul>
+    <li>Created by MrDevelopeR <a href='https://www.torn.com/profiles.php?XID=1964832' target='_blank'>SwiftJustice [1964832]</a></li>
+    <li>Calculates funds using jquery 25 x 100 = 2,500</li>
+    <li>Styled with CSS</li>
+    <li>Discord: em2pro4you</li>
+  </ul><br /><br />
+  <hr width='100%' style='text-align: center;' />
+  <h1>V1.0.2+ Ideas</h1>
+  <ul>
+    <li>Script Owner can enter api key to get logs faster</li>
+    <li>Using api key you can get the hits, users name, score from json request and return them</li>
+    <li>Using php / ajax will show top 100 hitters orders by kills / score with name link + earnings (Will not need to calc yourself yay!)</li>
+    <li>Ability to adjust players balance (if possiable)</li>
+	<li>Lots more</li>
+  </ul>
+</div>
+<script>
+  $(document).ready(function() {
+	function addCommas(nStr) {
+	  nStr += '';
+	  x = nStr.split('.');
+	  x1 = x[0];
+	  x2 = x.length > 1 ? '.' + x[1] : '';
+	  var rgx = /(\d+)(\d{3})/;
+	  while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	  }
+	  return x1 + x2;
+	}
+	
+	$('#apikeycontainer').hide();
+	
+	$(".input").keyup(function() {
+	  var val1 = $(".value1").val();
+      var val2 = $(".value2").val();
+	  val1 = parseInt(val1);
+	  val2 = parseInt(val2);
+      $("#result").val(addCommas(val1*val2));
+	});
+});
+</script>
+</body>
+</html>
