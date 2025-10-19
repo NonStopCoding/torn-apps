@@ -1,0 +1,1 @@
+const costperhit = 1;
