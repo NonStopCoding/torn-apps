@@ -151,6 +151,37 @@ a {
 	  }
 	  return x1 + x2;
 	}
+	function getValidStoredUserInfo() {
+      const storedTimestampStr = localStorage.getItem('userInfoTimestamp');
+      let storedName = null;
+      let storedId = null;
+	  let storedstrengh = null;
+	  let storeddefence = null;
+	  let storedspeed = null;
+	  let storeddex = null;
+	  let storedtotal = null;
+
+      if (storedTimestampStr) {
+        const storedTimestamp = parseInt(storedTimestampStr);
+        const oneHourInMillis = 60 * 60 * 1000;
+        const currentTime = Date.now();
+
+        if (currentTime - storedTimestamp < oneHourInMillis) {
+          storedName = localStorage.getItem('userName');
+          const storedIdStr = localStorage.getItem('userid');
+          if (storedIdStr) {
+            storedId = parseInt(storedId);
+          }
+        } else {
+            localStorage.removeItem('userName');
+            localStorage.removeItem('storedId');
+            localStorage.removeItem('userInfoTimestamp');
+            localStorage.removeItem('welcomeMessageShown');
+            console.log("Stored user info expired and removed.");
+        }
+      }
+      return { name: storedName, level: storedLevel };
+    }
 	
 	$('#apikeycontainer').hide();
 	
